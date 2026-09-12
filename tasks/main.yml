@@ -1,0 +1,23 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for Docker
+- name: check openssl and openssh
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: latest
+  loop:
+    - openssl
+    - openssh
+  ignore_errors: true
+- name: Check docker version
+  ansible.builtin.command: docker --version
+  ignore_errors: true
+- name: Install Docker
+  ansible.builtin.apt:
+    name: docker.io
+    state: present
+- name: Start docker service
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
