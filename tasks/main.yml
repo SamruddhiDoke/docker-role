@@ -11,11 +11,16 @@
   ignore_errors: true
 - name: Check docker version
   ansible.builtin.command: docker --version
+  register: output
   ignore_errors: true
+- name: Check Output
+  ansible.builtin.debug:
+    var: output
 - name: Install Docker
   ansible.builtin.apt:
     name: docker.io
     state: present
+  when: output.failed
 - name: Start docker service
   ansible.builtin.service:
     name: docker
